@@ -8,10 +8,12 @@ import org.mockito.Mock;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import pl.marczyk.temperaturerecorder.helpers.TemperatureTestHelper;
 import pl.marczyk.temperaturerecorder.model.Temperature;
 import pl.marczyk.temperaturerecorder.repository.TemperatureRepository;
 
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,6 +26,7 @@ import static org.powermock.api.mockito.PowerMockito.doNothing;
 import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.support.membermodification.MemberMatcher.method;
+import static pl.marczyk.temperaturerecorder.helpers.TemperatureTestHelper.prepareTemperatures;
 
 /**
  * Created by mm on 13.07.2017.
@@ -62,6 +65,22 @@ public class TemperatureServiceTest {
         // then
         assertThat(result).isEqualTo(temperature);
         verify(temperatureRepository, times(1)).save(temperature);
+        verifyNoMoreInteractions(temperatureRepository);
+    }
+
+    @Test
+    public void returns_ten_last_temperatures() throws Exception {
+        // given
+        List<Temperature> temperatures = prepareTemperatures();
+        TemperatureService spy = spy(new TemperatureService(temperatureRepository, logger));
+        when(temperatureRepository.findFirst10ByOrderByDateDesc()).thenReturn(temperatures);
+
+        // when
+        Iterable<Temperature> result = spy.getLastTenTeperatures();
+
+        // then
+        assertThat(result).isEqualTo(temperatures);
+        verify(temperatureRepository, times(1)).findFirst10ByOrderByDateDesc();
         verifyNoMoreInteractions(temperatureRepository);
     }
 
