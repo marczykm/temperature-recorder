@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Configuration;
 
 
 /**
+ * Configuration for H2 console.
+ *
  * Created by mm on 13.07.2017.
  */
 @Configuration

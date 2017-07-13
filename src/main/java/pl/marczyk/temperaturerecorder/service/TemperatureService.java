@@ -22,6 +22,11 @@ public class TemperatureService {
         this.temperatureRepository = temperatureRepository;
     }
 
+    /**
+     * Creates temperature entity.
+     * @param temperatureValue temperature value
+     * @return created temperature entity
+     */
     public Temperature createTemperature(double temperatureValue) {
         Temperature temperature = new Temperature(new Date(), temperatureValue);
         Temperature savedTemperature = temperatureRepository.save(temperature);
@@ -29,6 +34,10 @@ public class TemperatureService {
         return savedTemperature;
     }
 
+    /**
+     * Returns last 10 temperature values.
+     * @return list of temperatures
+     */
     public Iterable<Temperature> getLastTenTeperatures() {
         return temperatureRepository.findFirst10ByOrderByDateDesc();
     }
