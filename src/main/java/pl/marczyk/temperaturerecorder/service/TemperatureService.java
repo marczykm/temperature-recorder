@@ -14,12 +14,13 @@ import java.util.logging.Logger;
 @Service
 public class TemperatureService {
 
-    @Autowired private Logger logger;
+    private Logger logger;
     private TemperatureRepository temperatureRepository;
 
     @Autowired
-    public TemperatureService(TemperatureRepository temperatureRepository) {
+    public TemperatureService(TemperatureRepository temperatureRepository, Logger logger) {
         this.temperatureRepository = temperatureRepository;
+        this.logger = logger;
     }
 
     /**
@@ -28,7 +29,7 @@ public class TemperatureService {
      * @return created temperature entity
      */
     public Temperature createTemperature(double temperatureValue) {
-        Temperature temperature = new Temperature(new Date(), temperatureValue);
+        Temperature temperature = new Temperature(getActualTemperature(), temperatureValue);
         Temperature savedTemperature = temperatureRepository.save(temperature);
         logger.info(String.format("Created %s", savedTemperature));
         return savedTemperature;
@@ -40,5 +41,9 @@ public class TemperatureService {
      */
     public Iterable<Temperature> getLastTenTeperatures() {
         return temperatureRepository.findFirst10ByOrderByDateDesc();
+    }
+
+    private Date getActualTemperature() {
+        return new Date();
     }
 }

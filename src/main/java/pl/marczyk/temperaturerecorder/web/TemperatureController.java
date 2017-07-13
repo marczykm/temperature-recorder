@@ -17,7 +17,6 @@ public class TemperatureController {
     static final String TEMPERATURE_API_URL = "/api/v1/temperature";
     private static final String CREATE_TEMPERATURE_URL = "/{temperature:.+}";
 
-
     private TemperatureService temperatureService;
 
     @Autowired

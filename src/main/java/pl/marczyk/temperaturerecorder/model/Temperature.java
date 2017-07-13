@@ -48,4 +48,27 @@ public class Temperature {
                 ", temperature=" + temperature +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Temperature that = (Temperature) o;
+
+        if (Double.compare(that.temperature, temperature) != 0) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        return date != null ? date.equals(that.date) : that.date == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        temp = Double.doubleToLongBits(temperature);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
 }
