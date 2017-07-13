@@ -22,6 +22,8 @@ import pl.marczyk.temperaturerecorder.configuration.TestContext;
 import pl.marczyk.temperaturerecorder.model.Temperature;
 import pl.marczyk.temperaturerecorder.service.TemperatureService;
 
+import java.lang.reflect.TypeVariable;
+import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
@@ -38,6 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class TemperatureControllerTest {
 
+    private static final double TEMPERATURE_VALUE = 23.2;
     @Autowired
     private WebApplicationContext context;
 
@@ -69,6 +72,18 @@ public class TemperatureControllerTest {
                     .andExpect(jsonPath(date(i), is(temperatures.get(i).getDate().getTime())));
         }
         verify(temperatureServiceMock, times(1)).getLastTenTeperatures();
+        verifyNoMoreInteractions(temperatureServiceMock);
+    }
+
+    @Test
+    public void creates_temperature() throws Exception {
+        Temperature temperature = new Temperature(new Date(), TEMPERATURE_VALUE);
+        when(temperatureServiceMock.createTemperature(anyDouble())).thenReturn(temperature);
+
+        mvc.perform(post(TemperatureController.TEMPERATURE_API_URL + "/" + TEMPERATURE_VALUE))
+                .andExpect(status().isCreated());
+
+        verify(temperatureServiceMock, times(1)).createTemperature(TEMPERATURE_VALUE);
         verifyNoMoreInteractions(temperatureServiceMock);
     }
 
