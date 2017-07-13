@@ -14,8 +14,9 @@ import pl.marczyk.temperaturerecorder.service.TemperatureService;
 @RequestMapping(TemperatureController.TEMPERATURE_API_URL)
 public class TemperatureController {
 
-    static final String TEMPERATURE_API_URL = "/api/v1/temperature";
+    public static final String TEMPERATURE_API_URL = "/api/v1/temperature";
     private static final String CREATE_TEMPERATURE_URL = "/{temperature:.+}";
+
 
     private TemperatureService temperatureService;
 
