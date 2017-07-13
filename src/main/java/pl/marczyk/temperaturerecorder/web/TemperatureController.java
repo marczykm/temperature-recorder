@@ -11,8 +11,11 @@ import pl.marczyk.temperaturerecorder.service.TemperatureService;
  * Created by mm on 13.07.2017.
  */
 @RestController
-@RequestMapping("/api/v1/temperature")
+@RequestMapping(TemperatureController.TEMPERATURE_API_URL)
 public class TemperatureController {
+
+    static final String TEMPERATURE_API_URL = "/api/v1/temperature";
+    private static final String CREATE_TEMPERATURE_URL = "/{temperature:.+}";
 
     private TemperatureService temperatureService;
 
@@ -21,7 +24,7 @@ public class TemperatureController {
         this.temperatureService = temperatureService;
     }
 
-    @PostMapping("/{temperature:.+}")
+    @PostMapping(CREATE_TEMPERATURE_URL)
     public ResponseEntity createTemperature(@PathVariable double temperature){
         temperatureService.createTemperature(temperature);
         return new ResponseEntity(HttpStatus.CREATED);
