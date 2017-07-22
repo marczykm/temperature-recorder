@@ -16,6 +16,7 @@ public class TemperatureController {
 
     static final String TEMPERATURE_API_URL = "/api/v1/temperature";
     private static final String CREATE_TEMPERATURE_URL = "/{temperature:.+}";
+    public static final String CURRENT_URL = "/current";
 
     private TemperatureService temperatureService;
 
@@ -33,5 +34,11 @@ public class TemperatureController {
     @GetMapping
     public ResponseEntity<Iterable<Temperature>> getLastTenTemperatures() {
         return new ResponseEntity<>(temperatureService.getLastTenTeperatures(), HttpStatus.OK);
+    }
+
+    @GetMapping(CURRENT_URL)
+    public ResponseEntity<Temperature> getCurrentTemperature() {
+        // TODO: add error if temperature older than 1 minute
+        return new ResponseEntity<>(temperatureService.getLastTemperature(), HttpStatus.OK);
     }
 }

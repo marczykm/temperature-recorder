@@ -37,10 +37,18 @@ public class TemperatureService {
 
     /**
      * Returns last 10 temperature values.
-     * @return list of temperatures
+     * @return list of {@link Temperature}
      */
     public Iterable<Temperature> getLastTenTeperatures() {
         return temperatureRepository.findFirst10ByOrderByDateDesc();
+    }
+
+    /**
+     * Returns last temperature value
+     * @return {@link Temperature}
+     */
+    public Temperature getLastTemperature() {
+        return temperatureRepository.findFirst1ByOrderByDateDesc();
     }
 
     private Date getActualTemperature() {

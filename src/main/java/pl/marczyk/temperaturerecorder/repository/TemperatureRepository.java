@@ -12,4 +12,5 @@ import java.util.List;
 @Repository
 public interface TemperatureRepository extends CrudRepository<Temperature, Long>{
     List<Temperature> findFirst10ByOrderByDateDesc();
+    Temperature findFirst1ByOrderByDateDesc();
 }
