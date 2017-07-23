@@ -54,7 +54,7 @@ public class TemperatureServiceTest {
         TemperatureService spy = spy(new TemperatureService(temperatureRepository, logger));
         Temperature temperature = new Temperature(DATE, TEMPERATURE_VALUE);
         when(temperatureRepository.save(any(Temperature.class))).thenReturn(temperature);
-        when(spy, method(TemperatureService.class, "getActualTemperature"))
+        when(spy, method(TemperatureService.class, "getActualDate"))
                 .withNoArguments().thenReturn(DATE);
 
         // when
