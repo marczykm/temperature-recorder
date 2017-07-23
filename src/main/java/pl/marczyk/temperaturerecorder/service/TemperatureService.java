@@ -29,7 +29,7 @@ public class TemperatureService {
      * @return created temperature entity
      */
     public Temperature createTemperature(double temperatureValue) {
-        Temperature temperature = new Temperature(getActualTemperature(), temperatureValue);
+        Temperature temperature = new Temperature(getActualDate(), temperatureValue);
         Temperature savedTemperature = temperatureRepository.save(temperature);
         logger.info(String.format("Created %s", savedTemperature));
         return savedTemperature;
@@ -51,7 +51,7 @@ public class TemperatureService {
         return temperatureRepository.findFirst1ByOrderByDateDesc();
     }
 
-    private Date getActualTemperature() {
+    private Date getActualDate() {
         return new Date();
     }
 }
