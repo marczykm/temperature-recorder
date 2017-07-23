@@ -37,8 +37,6 @@ public class TemperatureServiceTest {
 
     public static final Date DATE = new DateTime(2000, 1, 1, 1,1).toDate();
     public static final double TEMPERATURE_VALUE = 23.2;
-//    @InjectMocks
-//    private TemperatureService temperatureService;
 
     @Mock
     private TemperatureRepository temperatureRepository;
@@ -81,6 +79,22 @@ public class TemperatureServiceTest {
         // then
         assertThat(result).isEqualTo(temperatures);
         verify(temperatureRepository, times(1)).findFirst10ByOrderByDateDesc();
+        verifyNoMoreInteractions(temperatureRepository);
+    }
+
+    @Test
+    public void return_last_temperature() throws Exception {
+        // given
+        Temperature temperature = new Temperature(DATE, TEMPERATURE_VALUE);
+        TemperatureService spy = spy(new TemperatureService(temperatureRepository, logger));
+        when(temperatureRepository.findFirst1ByOrderByDateDesc()).thenReturn(temperature);
+
+        // when
+        Temperature result = spy.getLastTemperature();
+
+        // then
+        assertThat(result).isEqualTo(temperature);
+        verify(temperatureRepository, times(1)).findFirst1ByOrderByDateDesc();
         verifyNoMoreInteractions(temperatureRepository);
     }
 
