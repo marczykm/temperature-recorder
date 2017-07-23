@@ -31,6 +31,8 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static pl.marczyk.temperaturerecorder.helpers.TemperatureTestHelper.prepareTemperatures;
+import static pl.marczyk.temperaturerecorder.web.TemperatureController.CURRENT_URL;
+import static pl.marczyk.temperaturerecorder.web.TemperatureController.TEMPERATURE_API_URL;
 
 
 /**
@@ -62,7 +64,7 @@ public class TemperatureControllerTest {
         List<Temperature> temperatures = prepareTemperatures();
         when(temperatureServiceMock.getLastTenTeperatures()).thenReturn(temperatures);
 
-        ResultActions $ = mvc.perform(get(TemperatureController.TEMPERATURE_API_URL))
+        ResultActions $ = mvc.perform(get(TEMPERATURE_API_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$", hasSize(temperatures.size())));
@@ -81,10 +83,24 @@ public class TemperatureControllerTest {
         Temperature temperature = new Temperature(new Date(), TEMPERATURE_VALUE);
         when(temperatureServiceMock.createTemperature(anyDouble())).thenReturn(temperature);
 
-        mvc.perform(post(TemperatureController.TEMPERATURE_API_URL + "/" + TEMPERATURE_VALUE))
+        mvc.perform(post(TEMPERATURE_API_URL + "/" + TEMPERATURE_VALUE))
                 .andExpect(status().isCreated());
 
         verify(temperatureServiceMock, times(1)).createTemperature(TEMPERATURE_VALUE);
+        verifyNoMoreInteractions(temperatureServiceMock);
+    }
+
+    @Test
+    public void returns_last_temerature_read() throws Exception {
+        Temperature temperature = new Temperature(new Date(), TEMPERATURE_VALUE);
+        when(temperatureServiceMock.getLastTemperature()).thenReturn(temperature);
+
+        ResultActions $ = mvc.perform(get(TEMPERATURE_API_URL + CURRENT_URL))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.temperature", is(temperature.getTemperature())))
+                .andExpect(jsonPath("$.date", is(temperature.getDate().getTime())));
+
+        verify(temperatureServiceMock, times(1)).getLastTemperature();
         verifyNoMoreInteractions(temperatureServiceMock);
     }
 
@@ -99,7 +115,5 @@ public class TemperatureControllerTest {
     private String id(int i) {
         return "$[" + i + "].id";
     }
-
-
 
 }
