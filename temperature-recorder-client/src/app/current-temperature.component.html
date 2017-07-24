@@ -1,7 +1,5 @@
 <div style="text-align:center">
-  <h1>
-    Current temperature
-  </h1>
-  <!-- <h2>{{ currentTemperature.date }}</h2> -->
-  <h2>{{ currentTemperature.temperature }}</h2>
+  <h1>Current temperature</h1>
+  <h2>{{ currentTemperature?.date | date:'dd.MM.y HH:mm:ss' }}</h2> 
+  <h2>{{ currentTemperature?.temperature }}&#8451;</h2>
 </div>

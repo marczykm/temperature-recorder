@@ -16,6 +16,6 @@ export class CurrentTemperatureComponent implements OnInit {
 
   ngOnInit(): void {
     this.temperatureService.getCurrent()
-      .then(temperature => this.currentTemperature = temperature);
+      .subscribe((res) => this.currentTemperature = res);
   }
 }
