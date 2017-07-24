@@ -36,6 +36,7 @@ public class TemperatureController {
         return new ResponseEntity<>(temperatureService.getLastTenTeperatures(), HttpStatus.OK);
     }
 
+    @CrossOrigin
     @GetMapping(CURRENT_URL)
     public ResponseEntity<Temperature> getCurrentTemperature() {
         // TODO: add error if temperature older than 1 minute
